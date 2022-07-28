@@ -21,9 +21,15 @@
         use Rpg\Mage;
         use Rpg\Chasseur;
 
-        $pseudo = $_POST['pseudo'] ?? null;
+        function toClean($value) {
+            return trim(htmlspecialchars($value));
+        }
+
+        $pseudo = ucfirst(toClean($_POST['pseudo'] ?? ''));
         $tribe = $_POST['tribe'] ?? null;
         $class = $_POST['class'] ?? null;
+        $object = ucfirst(toClean($_POST['pseudo'] ?? null));
+        $characters = [];
 
         $errors = [];
         $success = false;
@@ -46,6 +52,18 @@
 
         if ((empty($errors)) && $pseudo != null && $tribe != null && $class != null) {
             $success = true;
+
+            if ($class == 'guerrier') {
+                $characters[] = $object = new Guerrier($pseudo, $tribe, $class);
+            }
+            
+            if ($class == 'mage') {
+                $characters[] = $object = new Mage($pseudo, $tribe, $class);
+            } 
+
+            if ($class == 'chasseur') {
+                $characters[] = $object = new Chasseur($pseudo, $tribe, $class);
+            } 
         }
 
     ?>
@@ -53,16 +71,25 @@
     <div>
 
         <div class="w-2/3 mx-auto">
+
+            <!-- Début formulaire -->
+
             <form class="w-2/3 mx-auto border rounded-lg my-6 p-5 flex flex-col" method="POST">
 
                 <h1 class="text-center text-3xl my-6">Création de personnages</h1>
 
+                <!-- Nom -->
+
                 <input placeholder="votre nom..." class="my-6 rounded-lg" type="text" name="pseudo" id="pseudo">
 
-                <div class="flex flex-row items-center">
+                <!-- Nom aléatoire -->
+
+                <!-- <div class="flex flex-row items-center">
                     <input class="my-6 rounded-lg" type="checkbox" name="randPseudo" id="randPseudo">
                     <span class="ml-1">Générer un nom aléatoire</span>
-                </div>
+                </div> -->
+
+                <!-- Tribue -->
 
                 <label for="tribe">Votre tribu ?</label>
                 <select class="my-6 rounded-lg" name="tribe" id="tribe">
@@ -72,9 +99,13 @@
                     <option value="elfe">Elfe</option>
                 </select>
 
+                <!-- Classe -->
+
                 <label for="class">Votre classe ?</label>
                 <div class="flex flex-row justify-between">
                     
+                    <!-- Guerrier -->
+
                     <div class="w-1/3">
                         <div class="flex flex-row items-center">
                             <input type="radio" name="class" id="class" value="guerrier">
@@ -83,6 +114,9 @@
                         <img class="" src="img/guerrier.jpg">
                         
                     </div>
+
+                    <!-- Mage -->
+
                     <div class="w-1/3">
                         <div class="flex flex-row items-center">
                             <input type="radio" name="class" id="class" value="mage">
@@ -90,6 +124,9 @@
                         </div>
                         <img class="" src="img/mage.jpg">
                     </div>
+
+                    <!-- Chasseur -->
+
                     <div class="w-1/3">
                         <div class="flex flex-row items-center">
                             <input type="radio" name="class" id="class" value="chasseur">
@@ -99,18 +136,24 @@
                     </div>
                 </div>
                 
+                <!-- Button  -->
 
                 <div class="my-6">
                     <button class="bg-blue-300 hover:bg-blue-600 duration-500 rounded-lg text-center text-white p-2">Créer</button>
                 </div>
 
+                <!-- Div erreurs -->
+
                 <?php if (!empty($errors)) { ?>
                     <div class='w-full bg-red-100 my-6 p-3 rounded-lg'>
+                        <p>Il manque des données pour la création de votre personnage.</p>
                         <?php foreach ($errors as $error) { ?>
                                 <p>- <?= $error; ?></p>
                         <?php } ?>  
                     </div>                  
                 <?php } ?>
+
+                <!-- Div succès -->
 
                 <?php if ($success) { ?>
                     <div class="w-full bg-green-100 my-6 p-3 rounded-lg">
@@ -125,7 +168,9 @@
 
         <div class="w-2/3 mx-auto  border rounded-lg my-6 p-5">
           
+            <h1 class="text-center text-3xl my-6">Liste des personnages</h1>
 
+            <?= dump($characters); ?>
         </div>
 
     </div>
