@@ -222,7 +222,7 @@
 
                 <?php foreach ($characters as $character) { ?>
 
-                    <div class="w-1/3 border rounded-lg bg-blue-100 p-2 mx-auto cursor-pointer">
+                    <div class="w-1/4 border rounded-lg bg-blue-100 p-2 mx-auto cursor-pointer">
                         <?php if ($character['class'] == 'guerrier') { ?>
                             <img class="w-2/3 mx-auto mb-2" src="img/guerrier.jpg">
                         <?php } ?>
