@@ -4,12 +4,12 @@ namespace Rpg;
 
 class Guerrier extends Character
 {
-    public function __construct($name, $tribe, $class)
+    public function __construct($pseudo, $tribe, $class)
     {
-        parent::__construct($name, $tribe, $class);
+        parent::__construct($pseudo, $tribe, $class);
 
         $this->strength *= 3;
-        
+
     }
 }
 

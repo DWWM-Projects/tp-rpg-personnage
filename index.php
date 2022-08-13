@@ -9,7 +9,13 @@
 <body>
 
     <?php
+
+        // To fix :
+        // Eté obligé de passer les propriétés Protected en Public pour envoie BDD
+
+
         require __DIR__.'/../05-composer/vendor/autoload.php';
+        require 'config/db.php';
 
         spl_autoload_register(function ($class) {
             $class = str_replace('Rpg\\', '',$class);
@@ -28,8 +34,8 @@
         $pseudo = ucfirst(toClean($_POST['pseudo'] ?? ''));
         $tribe = $_POST['tribe'] ?? null;
         $class = $_POST['class'] ?? null;
-        $object = ucfirst(toClean($_POST['pseudo'] ?? null));
-        $characters = [];
+        // $object = ucfirst(toClean($_POST['pseudo'] ?? null));
+        // $characters = [];
 
         $errors = [];
         $success = false;
@@ -54,17 +60,57 @@
             $success = true;
 
             if ($class == 'guerrier') {
-                $characters[] = $object = new Guerrier($pseudo, $tribe, $class);
+                $object = new Guerrier($pseudo, $tribe, $class);
+
+                $query = $db->prepare('INSERT INTO characters (pseudo, tribe, class, health)
+                    Values (:pseudo, :tribe, :class, :health)');
+
+                $query->execute([
+
+                    ':pseudo' => $object->pseudo,
+                    ':tribe' => $object->tribe,
+                    ':class' => $object->class,
+                    ':health' => $object->health,
+
+                ]);
             }
             
             if ($class == 'mage') {
-                $characters[] = $object = new Mage($pseudo, $tribe, $class);
+                $object = new Mage($pseudo, $tribe, $class);
+
+                $query = $db->prepare('INSERT INTO characters (pseudo, tribe, class, health)
+                    Values (:pseudo, :tribe, :class, :health)');
+
+                $query->execute([
+
+                    ':pseudo' => $object->pseudo,
+                    ':tribe' => $object->tribe,
+                    ':class' => $object->class,
+                    ':health' => $object->health,
+
+                ]);
             } 
 
             if ($class == 'chasseur') {
-                $characters[] = $object = new Chasseur($pseudo, $tribe, $class);
-            } 
+                $object = new Chasseur($pseudo, $tribe, $class);
+
+                $query = $db->prepare('INSERT INTO characters (pseudo, tribe, class, health)
+                    Values (:pseudo, :tribe, :class, :health)');
+
+                $query->execute([
+
+                    ':pseudo' => $object->pseudo,
+                    ':tribe' => $object->tribe,
+                    ':class' => $object->class,
+                    ':health' => $object->health,
+
+                ]);
+            }
+        
         }
+
+        $query = $db->query('SELECT * FROM characters');
+        $characters = $query->fetchall();
 
     ?>
 
@@ -170,7 +216,22 @@
           
             <h1 class="text-center text-3xl my-6">Liste des personnages</h1>
 
-            <?= dump($characters); ?>
+            <!-- <?= dump($characters); ?> -->
+
+            <div class="flex flex-row">
+
+                <?php foreach ($characters as $character) { ?>
+
+                    <div class="w-1/3">
+                        <p class="text-center"><?= $character['pseudo']; ?></p>
+                        <p class="textcenter"><?= $character['tribe']; ?></p>
+                        <p class="textcenter"><?= $character['class']; ?></p>
+                        <p class="textcenter"><?= $character['health']; ?></p>
+                    </div>
+
+                <?php } ?>
+                
+            </div>
         </div>
 
     </div>
