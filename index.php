@@ -218,19 +218,30 @@
 
             <!-- <?= dump($characters); ?> -->
 
-            <div class="flex flex-row">
+            <div class="flex flex-row gap-1">
 
                 <?php foreach ($characters as $character) { ?>
 
-                    <div class="w-1/3">
-                        <p class="text-center"><?= $character['pseudo']; ?></p>
-                        <p class="textcenter"><?= $character['tribe']; ?></p>
-                        <p class="textcenter"><?= $character['class']; ?></p>
-                        <p class="textcenter"><?= $character['health']; ?></p>
+                    <div class="w-1/3 border rounded-lg bg-blue-100 p-2">
+                        <?php if ($character['class'] == 'guerrier') { ?>
+                            <img class="w-2/3 mx-auto mb-2" src="img/guerrier.jpg">
+                        <?php } ?>
+                        <?php if ($character['class'] == 'mage') { ?>
+                            <img class="w-2/3 mx-auto mb-2" src="img/mage.jpg">
+                        <?php } ?>
+                        <?php if ($character['class'] == 'chasseur') { ?>
+                            <img class="w-2/3 mx-auto mb-2" src="img/chasseur.jpg">
+                        <?php } ?>
+
+
+                        <p class="mb-2 font-bold">Pseudo: <?= $character['pseudo']; ?></p>
+                        <p class="mb-2 font-bold">Tribue: <?= ucfirst($character['tribe']); ?></p>
+                        <p class="mb-2 font-bold">Classe: <?= ucfirst($character['class']); ?></p>
+                        <p class="font-bold">Santé: <?= $character['health']; ?></p>
                     </div>
 
                 <?php } ?>
-                
+
             </div>
         </div>
 
