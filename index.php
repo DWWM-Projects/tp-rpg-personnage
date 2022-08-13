@@ -218,11 +218,11 @@
 
             <!-- <?= dump($characters); ?> -->
 
-            <div class="flex flex-row gap-1">
+            <div class="flex flex-row flex-wrap gap-3">
 
                 <?php foreach ($characters as $character) { ?>
 
-                    <div class="w-1/3 border rounded-lg bg-blue-100 p-2">
+                    <div class="w-1/3 border rounded-lg bg-blue-100 p-2 mx-auto cursor-pointer">
                         <?php if ($character['class'] == 'guerrier') { ?>
                             <img class="w-2/3 mx-auto mb-2" src="img/guerrier.jpg">
                         <?php } ?>
@@ -237,7 +237,8 @@
                         <p class="mb-2 font-bold">Pseudo: <?= $character['pseudo']; ?></p>
                         <p class="mb-2 font-bold">Tribue: <?= ucfirst($character['tribe']); ?></p>
                         <p class="mb-2 font-bold">Classe: <?= ucfirst($character['class']); ?></p>
-                        <p class="font-bold">Santé: <?= $character['health']; ?></p>
+                        <p class="mb-2 font-bold">Santé: <?= $character['health']; ?></p>
+                        <a href="#" class="bg-blue-300 hover:bg-blue-500 border rounded-lg text-center duration-500 text-white p-2 my-2">Incarner</a>
                     </div>
 
                 <?php } ?>
